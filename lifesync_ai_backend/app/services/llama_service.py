@@ -2,12 +2,11 @@
 import ollama
 import json
 import re
-from ollama import ollama
 from typing import List, Dict, Optional
 from datetime import datetime, timedelta
 
 class LlamaService:
-    def __init__(self, model_name: str = "llama3"):
+    def __init__(self, model_name: str = "llama2"):
         self.model_name = model_name
         self.client = ollama.Client()
     
