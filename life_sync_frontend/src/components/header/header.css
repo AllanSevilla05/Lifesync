@@ -17,9 +17,10 @@
   padding: 0 2rem;
 }
 
-.logo h2 {
-  margin: 0;
-  color: #542bfa;
+.logo-image {
+  width: auto;
+  height: 50px;
+  max-width: 150px;
 }
 
 .nav ul {
@@ -39,4 +40,18 @@
 
 .nav a:hover {
   color: #542bfa;
+}
+
+.login-link {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white !important;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.login-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
 }
