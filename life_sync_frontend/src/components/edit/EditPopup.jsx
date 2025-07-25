@@ -116,15 +116,28 @@ const iconOptions = [
 const EditPopup = ({ notification, onSave, onCancel }) => {
   const [title, setTitle] = useState(notification.title);
   const [datetime, setDatetime] = useState(notification.datetime);
-  const [selectedIcon, setSelectedIcon] = useState(notification.icon);
 
-  const handleIconChange = (e) => {
-    const found = iconOptions.find((i) => i.value === e.target.value);
-    setSelectedIcon(found?.component);
+  const initialSelectedValue =
+    iconOptions.find((opt) => opt.component.type === notification.icon.type)
+      ?.value || "";
+
+  const [selectedIconValue, setSelectedIconValue] =
+    useState(initialSelectedValue);
+
+  const handleIconClick = (value) => {
+    setSelectedIconValue(value);
   };
 
   const handleSave = () => {
-    onSave({ ...notification, title, datetime, icon: selectedIcon });
+    const selectedIconObj = iconOptions.find(
+      (opt) => opt.value === selectedIconValue
+    );
+    onSave({
+      ...notification,
+      title,
+      datetime,
+      icon: selectedIconObj?.component || notification.icon,
+    });
   };
 
   return (
@@ -142,16 +155,45 @@ const EditPopup = ({ notification, onSave, onCancel }) => {
       />
 
       <label>Icon</label>
-      <select onChange={handleIconChange} defaultValue="">
-        <option value="" disabled>
-          Select an icon
-        </option>
-        {iconOptions.map((opt) => (
-          <option key={opt.value} value={opt.value}>
-            {opt.label}
-          </option>
+      <div
+        style={{
+          display: "flex",
+          overflowX: "auto",
+          gap: "12px",
+          padding: "8px 0",
+          border: "1px solid #ccc",
+          borderRadius: "4px",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {iconOptions.map(({ label, value, component }) => (
+          <button
+            key={value}
+            type="button"
+            onClick={() => handleIconClick(value)}
+            title={label}
+            style={{
+              cursor: "pointer",
+              border:
+                selectedIconValue === value
+                  ? "2px solid #667eea"
+                  : "2px solid transparent",
+              borderRadius: "6px",
+              background: "none",
+              padding: "4px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              minWidth: "40px",
+              minHeight: "40px",
+              flexShrink: 0,
+              transition: "border-color 0.3s",
+            }}
+          >
+            {component}
+          </button>
         ))}
-      </select>
+      </div>
 
       <div className="edit-popup-buttons">
         <button onClick={handleSave}>Save</button>
