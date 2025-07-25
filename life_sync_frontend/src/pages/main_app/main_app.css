@@ -172,6 +172,28 @@
   font-size: 0.85rem;
 }
 
+.add-task-button{
+  
+  background: none;
+  border: none;
+  color: #ffffff;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.add-task-button:hover {
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+  transform: translateY(-3px);
+}
+
 /* 3 dot menu */
 .menu-button {
   background: transparent;
