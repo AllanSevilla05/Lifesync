@@ -19,6 +19,8 @@ import {
   Wind,
   Notebook,
   PawPrint,
+  Car,
+  ShoppingBasket,
 } from "lucide-react";
 
 const iconOptions = [
@@ -88,9 +90,19 @@ const iconOptions = [
     component: <Users size={24} color="#667eea" />,
   },
   {
+    label: "Pickup",
+    value: "Pickup",
+    component: <Car size={24} color="#667eea" />,
+  },
+  {
     label: "Project",
     value: "Project",
     component: <LayoutDashboard size={24} color="#667eea" />,
+  },
+  {
+    label: "Shopping",
+    value: "Shopping",
+    component: <ShoppingBasket size={24} color="#667eea" />,
   },
   {
     label: "Sleep",
