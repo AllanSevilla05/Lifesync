@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import {
   Mic,
+  Search,
   EllipsisVertical,
   Calendar,
   Activity,
@@ -95,14 +96,27 @@ const MainApp = () => {
           <img src="/images/LifeSyncLogo.png" alt="Logo" className="mx-auto" />
         </div>
 
-        <div className="search-bar">
+        <div className="search-bar position-relative">
           <input
             type="text"
             placeholder="Got something coming up? Let me know!"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
           />
-          <button type="button" aria-label="Voice search">
+          <button
+            type="button"
+            className="position-absolute "
+            aria-label="Search"
+            style={{ right: "113px", top: "6px" }}
+            onClick={() => alert(`Searching for: "${searchText}"`)}
+          >
+            <Search size={18} />
+          </button>
+          <button
+            type="button"
+            className="voice-button"
+            aria-label="Voice search"
+          >
             <Mic size={18} />
             Voice
           </button>
