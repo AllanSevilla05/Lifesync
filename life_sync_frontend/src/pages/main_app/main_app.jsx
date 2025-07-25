@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import "./main_app.css";
 
-const notificationsData = {
+const initialNotifications = {
   pastDue: [
     {
       id: 1,
@@ -38,18 +38,24 @@ const MainApp = () => {
   const [searchText, setSearchText] = useState("");
   const [menuOpenId, setMenuOpenId] = useState(null);
   const [showAiSuggestion, setShowAiSuggestion] = useState(true);
+  const [notificationsData, setNotificationsData] =
+    useState(initialNotifications);
+
   const menuRefs = useRef({});
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        menuOpenId !== null &&
-        menuRefs.current[menuOpenId] &&
-        !menuRefs.current[menuOpenId].contains(event.target)
-      ) {
-        setMenuOpenId(null);
-      }
+      setTimeout(() => {
+        if (
+          menuOpenId !== null &&
+          menuRefs.current[menuOpenId] &&
+          !menuRefs.current[menuOpenId].contains(event.target)
+        ) {
+          setMenuOpenId(null);
+        }
+      }, 500); // delay allows the menu button click to fire first
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [menuOpenId]);
@@ -58,13 +64,27 @@ const MainApp = () => {
     setMenuOpenId(menuOpenId === id ? null : id);
   };
 
-  const handleDismiss = (id) => {
-    alert(`Dismiss notification ${id}`);
+  const handleDismiss = () => {
+    setNotificationsData((prev) => {
+      if (prev.pastDue.find((n) => n.id === menuOpenId)) {
+        return {
+          ...prev,
+          pastDue: prev.pastDue.filter((n) => n.id !== menuOpenId),
+        };
+      }
+      if (prev.comingUp.find((n) => n.id === menuOpenId)) {
+        return {
+          ...prev,
+          comingUp: prev.comingUp.filter((n) => n.id !== menuOpenId),
+        };
+      }
+      return prev;
+    });
     setMenuOpenId(null);
   };
 
-  const handleEdit = (id) => {
-    alert(`Edit notification ${id}`);
+  const handleEdit = () => {
+    alert(`Edit notification ${menuOpenId}`);
     setMenuOpenId(null);
   };
 
@@ -115,8 +135,8 @@ const MainApp = () => {
 
                 {menuOpenId === id && (
                   <div className="menu-popup show">
-                    <button onClick={() => handleDismiss(id)}>Dismiss</button>
-                    <button onClick={() => handleEdit(id)}>Edit</button>
+                    <button onClick={() => handleDismiss()}>Dismiss</button>
+                    <button onClick={() => handleEdit()}>Edit</button>
                   </div>
                 )}
               </div>
