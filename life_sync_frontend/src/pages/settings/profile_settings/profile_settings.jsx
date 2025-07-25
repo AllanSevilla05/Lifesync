@@ -119,7 +119,7 @@ const ProfileSettings = () => {
       
       alert('Profile updated successfully!');
       navigate('/settings');
-    } catch (error) {
+    } catch {
       alert('Failed to update profile. Please try again.');
     } finally {
       setIsLoading(false);

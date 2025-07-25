@@ -16,10 +16,10 @@ ai_service = AIService()
 @router.post("/", response_model=TaskSchema)
 async def create_task(
     task: TaskCreate,
-    get_current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    db_task = Task(**task.dict(), user_id=get_current_user.id)
+    db_task = Task(**task.dict(), user_id=current_user.id)
     db.add(db_task)
     db.commit()
     db.refresh(db_task)
@@ -30,24 +30,24 @@ async def get_tasks(
     skip: int = 0,
     limit: int = 100,
     status: str = None,
-    get_current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    query = db.query(Task).filter(Task.user_id == get_current_user.id)
+    query = db.query(Task).filter(Task.user_id == current_user.id)
     
     if status:
         query = query.filter(Task.status == status)
     
-    tasks = query.offset(skip).limit(limit).all()
+    tasks = query.order_by(Task.created_at.desc()).offset(skip).limit(limit).all()
     return tasks
 
 @router.get("/{task_id}", response_model=TaskSchema)
 async def get_task(
     task_id: int,
-    get_current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    task = db.query(Task).filter(Task.id == task_id, Task.user_id == get_current_user.id).first()
+    task = db.query(Task).filter(Task.id == task_id, Task.user_id == current_user.id).first()
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
     return task
@@ -56,10 +56,10 @@ async def get_task(
 async def update_task(
     task_id: int,
     task_update: TaskUpdate,
-    get_current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    task = db.query(Task).filter(Task.id == task_id, Task.user_id == get_current_user.id).first()
+    task = db.query(Task).filter(Task.id == task_id, Task.user_id == current_user.id).first()
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
     
@@ -80,10 +80,10 @@ async def update_task(
 @router.delete("/{task_id}")
 async def delete_task(
     task_id: int,
-    get_current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    task = db.query(Task).filter(Task.id == task_id, Task.user_id == get_current_user.id).first()
+    task = db.query(Task).filter(Task.id == task_id, Task.user_id == current_user.id).first()
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
     
@@ -94,7 +94,7 @@ async def delete_task(
 @router.post("/voice", response_model=List[TaskSchema])
 async def create_tasks_from_voice(
     voice_input: VoiceTaskInput,
-    get_current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Create tasks from voice/natural language input"""
@@ -109,7 +109,7 @@ async def create_tasks_from_voice(
     
     for task_data in parsed_data.get("tasks", []):
         db_task = Task(
-            user_id=get_current_user.id,
+            user_id=current_user.id,
             title=task_data.get("title"),
             description=task_data.get("description"),
             priority=task_data.get("priority", 1),
@@ -130,12 +130,12 @@ async def create_tasks_from_voice(
 async def task_check_in(
     task_id: int,
     check_in: TaskCheckInCreate,
-    get_current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Record a check-in for a specific task"""
     
-    task = db.query(Task).filter(Task.id == task_id, Task.user_id == get_current_user.id).first()
+    task = db.query(Task).filter(Task.id == task_id, Task.user_id == current_user.id).first()
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
     
@@ -160,14 +160,14 @@ async def task_check_in(
 
 @router.get("/optimize/schedule")
 async def optimize_schedule(
-    get_current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Get AI-optimized schedule for the user's tasks"""
     
     # Get pending tasks
     tasks = db.query(Task).filter(
-        Task.user_id == get_current_user.id,
+        Task.user_id == current_user.id,
         Task.status.in_(["pending", "in_progress"])
     ).all()
     

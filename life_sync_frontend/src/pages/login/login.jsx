@@ -1,13 +1,26 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
 import "./Login.css";
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login, loading, isAuthenticated } = useAuth();
+  
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  
+  const [error, setError] = useState("");
+
+  // Redirect if already authenticated
+  if (isAuthenticated) {
+    const from = location.state?.from?.pathname || "/main";
+    navigate(from, { replace: true });
+    return null;
+  }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -15,13 +28,25 @@ const Login = () => {
       ...prev,
       [name]: value,
     }));
+    
+    // Clear error when user starts typing
+    if (error) {
+      setError("");
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log("Login attempt:", formData);
-    navigate("/main");
+    setError("");
+
+    const result = await login(formData);
+    
+    if (result.success) {
+      const from = location.state?.from?.pathname || "/main";
+      navigate(from, { replace: true });
+    } else {
+      setError(result.error);
+    }
   };
 
   return (
@@ -34,6 +59,19 @@ const Login = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="login-form">
+          {error && (
+            <div className="error-message" style={{ 
+              color: '#d32f2f', 
+              marginBottom: '16px', 
+              padding: '8px', 
+              backgroundColor: '#ffebee', 
+              borderRadius: '4px',
+              border: '1px solid #ffcdd2' 
+            }}>
+              {error}
+            </div>
+          )}
+          
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input
@@ -44,6 +82,7 @@ const Login = () => {
               onChange={handleInputChange}
               placeholder="Enter your email"
               required
+              disabled={loading}
             />
           </div>
 
@@ -57,11 +96,12 @@ const Login = () => {
               onChange={handleInputChange}
               placeholder="Enter your password"
               required
+              disabled={loading}
             />
           </div>
 
-          <button type="submit" className="login-button">
-            Sign In
+          <button type="submit" className="login-button" disabled={loading}>
+            {loading ? 'Signing In...' : 'Sign In'}
           </button>
         </form>
 

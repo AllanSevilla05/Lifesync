@@ -3,7 +3,7 @@ from typing import Optional
 
 class Settings(BaseSettings):
     # Database
-    database_url: str = "postgresql://user:password@localhost:5432/lifesync"
+    database_url: str = "sqlite:///./lifesync.db"
     
     # Security
     secret_key: str = "your-super-secret-key-change-this-in-production"
@@ -13,6 +13,8 @@ class Settings(BaseSettings):
     # AI Services
     openai_api_key: Optional[str] = None
     llama_api_key: Optional[str] = None
+    ollama_base_url: str = "http://localhost:11434"
+    ollama_model: str = "llama3.2"
     
     # File Upload
     upload_dir: str = "uploads"

@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 import "./sign_up.css";
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const { register, loading, isAuthenticated } = useAuth();
+  
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -13,6 +16,13 @@ const SignUp = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [apiError, setApiError] = useState("");
+
+  // Redirect if already authenticated
+  if (isAuthenticated) {
+    navigate("/main", { replace: true });
+    return null;
+  }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -21,12 +31,16 @@ const SignUp = () => {
       [name]: value,
     }));
 
-    // Clear error when user starts typing
+    // Clear errors when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
         [name]: "",
       }));
+    }
+    
+    if (apiError) {
+      setApiError("");
     }
   };
 
@@ -62,8 +76,9 @@ const SignUp = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setApiError("");
 
     const formErrors = validateForm();
     if (Object.keys(formErrors).length > 0) {
@@ -71,10 +86,13 @@ const SignUp = () => {
       return;
     }
 
-    // Handle sign up logic here
-    console.log("Sign up attempt:", formData);
-    // You would typically send this to your backend API
-    navigate("/main");
+    const result = await register(formData);
+    
+    if (result.success) {
+      navigate("/main", { replace: true });
+    } else {
+      setApiError(result.error);
+    }
   };
 
   return (
@@ -87,6 +105,19 @@ const SignUp = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="signup-form">
+          {apiError && (
+            <div className="error-message" style={{ 
+              color: '#d32f2f', 
+              marginBottom: '16px', 
+              padding: '8px', 
+              backgroundColor: '#ffebee', 
+              borderRadius: '4px',
+              border: '1px solid #ffcdd2' 
+            }}>
+              {apiError}
+            </div>
+          )}
+          
           <div className="name-row">
             <div className="form-group">
               <label htmlFor="firstName">First Name</label>
@@ -169,8 +200,8 @@ const SignUp = () => {
             )}
           </div>
 
-          <button type="submit" className="signup-button">
-            Create Account
+          <button type="submit" className="signup-button" disabled={loading}>
+            {loading ? 'Creating Account...' : 'Create Account'}
           </button>
         </form>
 
