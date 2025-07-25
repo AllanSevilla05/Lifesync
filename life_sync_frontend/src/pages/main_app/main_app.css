@@ -1,138 +1,271 @@
+/* Container and card */
 .main-container {
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .main-card {
   background: white;
-  padding: 3rem;
   border-radius: 15px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  max-width: 800px;
   width: 100%;
-  max-width: 500px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
+/* Header */
 .main-header {
   text-align: center;
   margin-bottom: 2rem;
 }
 
+.main-header img {
+  width: 120px;
+  margin-bottom: 1rem;
+}
+
 .main-header h1 {
   font-size: 2rem;
   color: #333;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem;
 }
 
 .main-header p {
   color: #666;
-  font-size: 1rem;
-}
-
-.main-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.name-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.form-group label {
+  font-size: 1.1rem;
   font-weight: 500;
-  color: #333;
-  font-size: 0.9rem;
 }
 
-.form-group input {
-  padding: 0.75rem;
+/* Search bar container */
+.search-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.search-bar input[type="text"] {
+  flex: 1;
+  padding: 0.75rem 1rem;
   border: 2px solid #e1e5e9;
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.3s;
 }
 
-.form-group input:focus {
+.search-bar input[type="text"]:focus {
   outline: none;
   border-color: #667eea;
 }
 
-.form-group input.error {
-  border-color: #e74c3c;
-}
-
-.error-message {
-  color: #e74c3c;
-  font-size: 0.8rem;
-  font-weight: 500;
-}
-
-.main-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+.search-bar button {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #667eea;
   color: white;
   border: none;
-  padding: 0.75rem;
   border-radius: 8px;
+  padding: 0 1rem;
+  font-weight: 600;
   font-size: 1rem;
-  font-weight: 500;
   cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
-  margin-top: 0.5rem;
+  transition: background-color 0.3s;
 }
 
-.main-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+.search-bar button:hover {
+  background: #5a6edc;
 }
 
-.main-footer {
-  text-align: center;
-  margin-top: 2rem;
-  font-size: 0.9rem;
+/* Notifications section */
+.notifications {
+  background: #f9f9f9;
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
 }
 
-.main-footer p {
-  color: #666;
+.notifications h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 1rem;
 }
 
-.main-footer a {
+/* Notification lists */
+.notification-list {
+  margin-bottom: 1.5rem;
+}
+
+.notification-list h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 0.75rem;
+}
+
+/* Notification item */
+.notification-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.notification-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+/* Icon next to notification */
+.notification-icon {
   color: #667eea;
-  text-decoration: none;
-  font-weight: 500;
+  font-size: 1.8rem;
+  flex-shrink: 0;
 }
 
-.main-footer a:hover {
-  text-decoration: underline;
+/* Notification text container */
+.notification-text {
+  display: flex;
+  flex-direction: column;
+  color: #444;
+  font-size: 0.95rem;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-  .main-container {
-    padding: 1rem;
-  }
+.notification-text .title {
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
 
-  .main-card {
-    padding: 2rem;
-  }
+.notification-text .time {
+  color: #999;
+  font-size: 0.85rem;
+}
 
-  .name-row {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
+/* 3 dot menu */
+.menu-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  font-size: 1.4rem;
+  padding: 0.3rem;
+  position: relative;
+  flex-shrink: 0;
+}
 
-  .main-header h1 {
-    font-size: 1.75rem;
-  }
+.menu-button:hover {
+  color: #333;
+}
+
+/* Popup menu */
+.menu-popup {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  background: white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  width: 140px;
+  z-index: 10;
+  display: none;
+  flex-direction: column;
+  padding: 0.5rem 0;
+}
+
+.menu-popup.show {
+  display: flex;
+}
+
+.menu-popup button {
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.menu-popup button:hover {
+  background-color: #f0f0f0;
+}
+
+/* Buttons section */
+.buttons-section {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.buttons-section button {
+  flex: 1;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.buttons-section button:hover {
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+  transform: translateY(-3px);
+}
+
+/* AI Suggestion box */
+.ai-suggestion {
+  position: relative;
+  background: #e9f0ff;
+  border-radius: 15px;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+  max-width: 800px;
+  margin: 0 auto 3rem auto;
+}
+
+.ai-suggestion h2 {
+  font-size: 1.4rem;
+  color: #334d8c;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+}
+
+/* Close button for AI suggestion */
+.ai-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 1.4rem;
+  color: #334d8c;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.ai-close-btn:hover {
+  color: #667eea;
+}
+
+/* AI suggestion text */
+.ai-text {
+  font-size: 1.05rem;
+  color: #2c3e70;
+  line-height: 1.5;
 }
