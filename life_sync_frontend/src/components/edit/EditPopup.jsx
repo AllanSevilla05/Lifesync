@@ -160,7 +160,7 @@ const EditPopup = ({ notification, onSave, onCancel }) => {
 
   return (
     <div className="edit-popup">
-      <h4>Edit Notification</h4>
+      <h4>Notification Details</h4>
 
       <label>Title</label>
       <input value={title} onChange={(e) => setTitle(e.target.value)} />
