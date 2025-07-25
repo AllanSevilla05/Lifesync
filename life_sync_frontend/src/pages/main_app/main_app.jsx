@@ -6,8 +6,11 @@ import {
   Calendar,
   Activity,
   Dumbbell,
-  Bell,
+  BriefcaseMedical,
+  Wind,
 } from "lucide-react";
+import EditPopup from "../../components/edit/EditPopup";
+
 import "./main_app.css";
 
 const initialNotifications = {
@@ -16,21 +19,21 @@ const initialNotifications = {
       id: 1,
       icon: <Dumbbell size={24} color="#667eea" />,
       title: "Gym session with John",
-      time: "Reminder set for: July 5th, 2025 at 7:00PM",
+      datetime: "2025-07-05T19:00",
     },
     {
       id: 2,
-      icon: <Bell size={24} color="#667eea" />,
+      icon: <BriefcaseMedical size={24} color="#667eea" />,
       title: "Doctor appointment",
-      time: "Reminder set for: July 1st, 2025 at 9:00AM",
+      datetime: "2025-07-01T09:00",
     },
   ],
   comingUp: [
     {
       id: 3,
-      icon: <Dumbbell size={24} color="#667eea" />,
+      icon: <Wind size={24} color="#667eea" />,
       title: "Yoga class",
-      time: "Reminder set for: July 10th, 2025 at 6:00AM",
+      datetime: "2025-07-10T06:00",
     },
   ],
 };
@@ -41,8 +44,12 @@ const MainApp = () => {
   const [showAiSuggestion, setShowAiSuggestion] = useState(true);
   const [notificationsData, setNotificationsData] =
     useState(initialNotifications);
+  const [editingNotification, setEditingNotification] = useState(null);
 
   const menuRefs = useRef({});
+
+  const formatDatetime = (dtString) =>
+    `Reminder set for: ${new Date(dtString).toLocaleString()}`;
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -85,8 +92,25 @@ const MainApp = () => {
   };
 
   const handleEdit = () => {
-    alert(`Edit notification ${menuOpenId}`);
+    const allNotifications = [
+      ...notificationsData.pastDue,
+      ...notificationsData.comingUp,
+    ];
+    const notif = allNotifications.find((n) => n.id === menuOpenId);
+    if (notif) setEditingNotification(notif);
     setMenuOpenId(null);
+  };
+
+  const handleSaveEdit = (updatedNotif) => {
+    setNotificationsData((prev) => ({
+      pastDue: prev.pastDue.map((n) =>
+        n.id === updatedNotif.id ? updatedNotif : n
+      ),
+      comingUp: prev.comingUp.map((n) =>
+        n.id === updatedNotif.id ? updatedNotif : n
+      ),
+    }));
+    setEditingNotification(null);
   };
 
   return (
@@ -128,13 +152,13 @@ const MainApp = () => {
           <div className="notification-list">
             <h3>Past Due</h3>
             {notificationsData.pastDue.length === 0 && <p>No past due items</p>}
-            {notificationsData.pastDue.map(({ id, icon, title, time }) => (
+            {notificationsData.pastDue.map(({ id, icon, title, datetime }) => (
               <div className="notification-item" key={id}>
                 <div className="notification-left">
                   <div className="notification-icon">{icon}</div>
                   <div className="notification-text">
                     <div className="title">{title}</div>
-                    <div className="time">{time}</div>
+                    <div className="time">{formatDatetime(datetime)}</div>
                   </div>
                 </div>
 
@@ -162,13 +186,13 @@ const MainApp = () => {
             {notificationsData.comingUp.length === 0 && (
               <p>No upcoming items</p>
             )}
-            {notificationsData.comingUp.map(({ id, icon, title, time }) => (
+            {notificationsData.comingUp.map(({ id, icon, title, datetime }) => (
               <div className="notification-item" key={id}>
                 <div className="notification-left">
                   <div className="notification-icon">{icon}</div>
                   <div className="notification-text">
                     <div className="title">{title}</div>
-                    <div className="time">{time}</div>
+                    <div className="time">{formatDatetime(datetime)}</div>
                   </div>
                 </div>
 
@@ -220,6 +244,13 @@ const MainApp = () => {
           </div>
         )}
       </div>
+      {editingNotification && (
+        <EditPopup
+          notification={editingNotification}
+          onSave={handleSaveEdit}
+          onCancel={() => setEditingNotification(null)}
+        />
+      )}
     </div>
   );
 };
