@@ -18,13 +18,49 @@ import {
   BrushCleaning,
   Wind,
   Notebook,
+  PawPrint,
 } from "lucide-react";
 
 const iconOptions = [
   {
-    label: "Workout",
-    value: "Workout",
-    component: <Dumbbell size={24} color="#667eea" />,
+    label: "Assignment",
+    value: "Assignment",
+    component: <FileText size={24} color="#667eea" />,
+  },
+  {
+    label: "Break",
+    value: "Break",
+    component: <Coffee size={24} color="#667eea" />,
+  },
+  {
+    label: "Book",
+    value: "Book",
+    component: <Book size={24} color="#667eea" />,
+  },
+  {
+    label: "Call",
+    value: "Call",
+    component: <PhoneCall size={24} color="#667eea" />,
+  },
+  {
+    label: "Chores",
+    value: "Chores",
+    component: <BrushCleaning size={24} color="#667eea" />,
+  },
+  {
+    label: "Class",
+    value: "Class",
+    component: <Notebook size={24} color="#667eea" />,
+  },
+  {
+    label: "Exam",
+    value: "Exam",
+    component: <ClipboardCheck size={24} color="#667eea" />,
+  },
+  {
+    label: "Event",
+    value: "Event",
+    component: <CalendarHeart size={24} color="#667eea" />,
   },
   {
     label: "General",
@@ -37,69 +73,9 @@ const iconOptions = [
     component: <BriefcaseMedical size={24} color="#667eea" />,
   },
   {
-    label: "Book",
-    value: "Book",
-    component: <Book size={24} color="#667eea" />,
-  },
-  {
-    label: "Assignment",
-    value: "Assignment",
-    component: <FileText size={24} color="#667eea" />,
-  },
-  {
-    label: "Exam",
-    value: "Exam",
-    component: <ClipboardCheck size={24} color="#667eea" />,
-  },
-  {
-    label: "Study Session",
-    value: "Study",
-    component: <BookOpen size={24} color="#667eea" />,
-  },
-  {
-    label: "Sleep",
-    value: "Sleep",
-    component: <Moon size={24} color="#667eea" />,
-  },
-  {
     label: "Hydration",
     value: "Hydration",
     component: <Droplet size={24} color="#667eea" />,
-  },
-  {
-    label: "Break",
-    value: "Break",
-    component: <Coffee size={24} color="#667eea" />,
-  },
-  {
-    label: "To-Do",
-    value: "ToDo",
-    component: <ListTodo size={24} color="#667eea" />,
-  },
-  {
-    label: "Meeting",
-    value: "Meeting",
-    component: <Users size={24} color="#667eea" />,
-  },
-  {
-    label: "Event",
-    value: "Event",
-    component: <CalendarHeart size={24} color="#667eea" />,
-  },
-  {
-    label: "Call",
-    value: "Call",
-    component: <PhoneCall size={24} color="#667eea" />,
-  },
-  {
-    label: "Project",
-    value: "Project",
-    component: <LayoutDashboard size={24} color="#667eea" />,
-  },
-  {
-    label: "Chores",
-    value: "Chores",
-    component: <BrushCleaning size={24} color="#667eea" />,
   },
   {
     label: "Meditation",
@@ -107,9 +83,39 @@ const iconOptions = [
     component: <Wind size={24} color="#667eea" />,
   },
   {
-    label: "Class",
-    value: "Class",
-    component: <Notebook size={24} color="#667eea" />,
+    label: "Meeting",
+    value: "Meeting",
+    component: <Users size={24} color="#667eea" />,
+  },
+  {
+    label: "Project",
+    value: "Project",
+    component: <LayoutDashboard size={24} color="#667eea" />,
+  },
+  {
+    label: "Sleep",
+    value: "Sleep",
+    component: <Moon size={24} color="#667eea" />,
+  },
+  {
+    label: "Study Session",
+    value: "Study",
+    component: <BookOpen size={24} color="#667eea" />,
+  },
+  {
+    label: "To-Do",
+    value: "ToDo",
+    component: <ListTodo size={24} color="#667eea" />,
+  },
+  {
+    label: "Vet",
+    value: "Vet",
+    component: <PawPrint size={24} color="#667eea" />,
+  },
+  {
+    label: "Workout",
+    value: "Workout",
+    component: <Dumbbell size={24} color="#667eea" />,
   },
 ];
 
