@@ -14,6 +14,7 @@ import {
   Heart,
 } from "lucide-react";
 import EditPopup from "../../components/edit/EditPopup";
+import MiniAgenda from "../../components/mini_agenda/mini_agenda";
 
 import "./main_app.css";
 
@@ -135,6 +136,10 @@ const MainApp = () => {
   const handleSettingsClick = () => {
     navigate('/settings');
     setProfileMenuOpen(false);
+  };
+
+  const handleViewCalendar = () => {
+    navigate('/calendar');
   };
 
   const handleAdd = () => {
@@ -327,11 +332,12 @@ const MainApp = () => {
           </div>
         </div>
 
+        <MiniAgenda 
+          notificationsData={notificationsData}
+          onViewCalendar={handleViewCalendar}
+        />
+
         <div className="buttons-section">
-          <button type="button" aria-label="View Calendar">
-            <Calendar size={20} />
-            View Calendar
-          </button>
           <button type="button" aria-label="Productivity">
             <Activity size={20} />
             Productivity

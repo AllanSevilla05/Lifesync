@@ -6,6 +6,7 @@ import MainApp from "./pages/main_app";
 import ForgotPassword from "./pages/forgot_password";
 import SettingsPage from "./pages/settings/settings";
 import ProfileSettings from "./pages/settings/profile_settings";
+import CalendarPage from "./pages/calendar/calendar";
 
 import "./App.css";
 
@@ -20,6 +21,8 @@ function App() {
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/profile-settings" element={<ProfileSettings />} />
+        <Route path="/calendar" element={<CalendarPage />} />
+        
       </Routes>
     </Router>
   );
