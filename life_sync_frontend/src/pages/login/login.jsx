@@ -70,7 +70,7 @@ const Login = () => {
             Don't have an account? <Link to="/sign_up">Sign up</Link>
           </p>
           <p>
-            <a href="/forgot-password">Forgot your password?</a>
+            <Link to="/forgotpassword">Forgot your password?</Link>
           </p>
         </div>
       </div>
