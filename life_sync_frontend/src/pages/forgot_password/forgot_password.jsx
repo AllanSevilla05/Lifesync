@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import "./forgot_password.css"; // reuse the same styles
+import "./forgot_password.css";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -14,14 +14,14 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-card">
-        <div className="login-header">
+    <div className="forgot-password-container">
+      <div className="forgot-password-card">
+        <div className="forgot-password-header">
           <h1>Forgot Password</h1>
           <p>Enter your email to reset your password</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="login-form">
+        <form onSubmit={handleSubmit} className="forgot-password-form">
           <div className="form-group">
             <label htmlFor="email">Email address</label>
             <input
@@ -34,12 +34,12 @@ const ForgotPassword = () => {
             />
           </div>
 
-          <button type="submit" className="login-button">
+          <button type="submit" className="forgot-password-button">
             Send Reset Link
           </button>
         </form>
 
-        <div className="login-footer">
+        <div className="forgot-password-footer">
           <p>
             Remembered your password? <Link to="/login">Back to Login</Link>
           </p>
