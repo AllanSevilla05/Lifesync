@@ -51,19 +51,14 @@ const initialNotifications = {
 };
 
 const MainApp = () => {
+  // All state declarations in one place
   const [searchText, setSearchText] = useState("");
   const [menuOpenId, setMenuOpenId] = useState(null);
   const [showAiSuggestion, setShowAiSuggestion] = useState(true);
-
   const [notificationsData, setNotificationsData] = useState(initialNotifications);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
-  
-
-  const [notificationsData, setNotificationsData] =
-    useState(initialNotifications);
   const [editingNotification, setEditingNotification] = useState(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
-
 
   const menuRefs = useRef({});
   const profileMenuRef = useRef(null);
@@ -137,10 +132,10 @@ const MainApp = () => {
     setMenuOpenId(null);
   };
 
-
   const handleSettingsClick = () => {
     navigate('/settings');
     setProfileMenuOpen(false);
+  };
 
   const handleAdd = () => {
     setIsAddingNew(true);
@@ -197,7 +192,6 @@ const MainApp = () => {
   const handleCancelEdit = () => {
     setEditingNotification(null);
     setIsAddingNew(false);
-
   };
 
   return (
