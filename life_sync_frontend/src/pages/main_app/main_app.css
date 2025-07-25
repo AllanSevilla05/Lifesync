@@ -24,7 +24,7 @@
 }
 
 .main-header img {
-  width: 120px;
+  /* width: 120px; */
   margin-bottom: 1rem;
 }
 
@@ -172,8 +172,7 @@
   font-size: 0.85rem;
 }
 
-.add-task-button{
-  
+.add-task-button {
   background: none;
   border: none;
   color: #ffffff;
@@ -312,7 +311,6 @@
   line-height: 1.5;
 }
 
-
 .main-header {
   display: flex;
   justify-content: space-between;
@@ -355,7 +353,7 @@
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   z-index: 100;
   min-width: 120px;
   padding: 8px 0;

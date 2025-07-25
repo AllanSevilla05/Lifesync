@@ -57,7 +57,8 @@ const MainApp = () => {
   const [searchText, setSearchText] = useState("");
   const [menuOpenId, setMenuOpenId] = useState(null);
   const [showAiSuggestion, setShowAiSuggestion] = useState(true);
-  const [notificationsData, setNotificationsData] = useState(initialNotifications);
+  const [notificationsData, setNotificationsData] =
+    useState(initialNotifications);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [editingNotification, setEditingNotification] = useState(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
@@ -135,24 +136,22 @@ const MainApp = () => {
   };
 
   const handleSettingsClick = () => {
-    navigate('/settings');
+    navigate("/settings");
     setProfileMenuOpen(false);
   };
 
-
   const handleViewCalendar = () => {
-    navigate('/calendar');
+    navigate("/calendar");
   };
 
   const handleViewMoodCalendar = () => {
-    navigate('/mood-calendar');
+    navigate("/mood-calendar");
   };
 
   const handleViewAILog = () => {
-    navigate('/ai-log');
+    navigate("/ai-log");
     setProfileMenuOpen(false);
   };
-
 
   const handleAdd = () => {
     setIsAddingNew(true);
@@ -223,18 +222,23 @@ const MainApp = () => {
               className="profile-pic-btn"
               onClick={() => setProfileMenuOpen((open) => !open)}
               aria-label="Open profile menu"
-              style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}
+              style={{
+                background: "none",
+                border: "none",
+                padding: 0,
+                cursor: "pointer",
+              }}
             >
               <img
-                src="life_sync_frontend/src/assets/ProfilePicture.png"
+                src="/images/ProfilePicture.png"
                 alt="Profile"
                 className="profile-pic"
               />
             </button>
             {profileMenuOpen && (
               <div className="profile-dropdown">
-                 <button onClick={handleViewAILog}>AI Log</button>
-                 <button onClick={handleSettingsClick}>Settings</button>
+                <button onClick={handleViewAILog}>AI Log</button>
+                <button onClick={handleSettingsClick}>Settings</button>
               </div>
             )}
           </div>
@@ -269,7 +273,8 @@ const MainApp = () => {
         <div className="notifications">
           <div className="d-flex align-items-center justify-content-between add-task">
             <h2>Tasks</h2>
-            <button className="add-task-button"
+            <button
+              className="add-task-button"
               type="button"
               aria-label="Add new task"
               onClick={() => handleAdd()}
@@ -345,7 +350,7 @@ const MainApp = () => {
           </div>
         </div>
 
-        <MiniAgenda 
+        <MiniAgenda
           notificationsData={notificationsData}
           onViewCalendar={handleViewCalendar}
         />
