@@ -8,10 +8,14 @@ import {
   Dumbbell,
   BriefcaseMedical,
   Wind,
+  Plus,
+  Bell,
 } from "lucide-react";
 import EditPopup from "../../components/edit/EditPopup";
 
 import "./main_app.css";
+
+const now = new Date();
 
 const initialNotifications = {
   pastDue: [
@@ -19,13 +23,17 @@ const initialNotifications = {
       id: 1,
       icon: <Dumbbell size={24} color="#667eea" />,
       title: "Gym session with John",
-      datetime: "2025-07-05T19:00",
+      datetime: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000) // 3 days ago
+        .toISOString()
+        .slice(0, 16),
     },
     {
       id: 2,
       icon: <BriefcaseMedical size={24} color="#667eea" />,
       title: "Doctor appointment",
-      datetime: "2025-07-01T09:00",
+      datetime: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000) // 5 days ago
+        .toISOString()
+        .slice(0, 16),
     },
   ],
   comingUp: [
@@ -33,7 +41,9 @@ const initialNotifications = {
       id: 3,
       icon: <Wind size={24} color="#667eea" />,
       title: "Yoga class",
-      datetime: "2025-07-10T06:00",
+      datetime: new Date(now.getTime() + 3 * 60 * 60 * 1000) // 3 hours later
+        .toISOString()
+        .slice(0, 16),
     },
   ],
 };
@@ -45,6 +55,7 @@ const MainApp = () => {
   const [notificationsData, setNotificationsData] =
     useState(initialNotifications);
   const [editingNotification, setEditingNotification] = useState(null);
+  const [isAddingNew, setIsAddingNew] = useState(false);
 
   const menuRefs = useRef({});
 
@@ -101,16 +112,61 @@ const MainApp = () => {
     setMenuOpenId(null);
   };
 
+  const handleAdd = () => {
+    setIsAddingNew(true);
+    setEditingNotification({
+      id: null,
+      icon: <Bell size={24} color="#667eea" />,
+      title: "",
+      datetime: new Date().toISOString().slice(0, 16),
+    });
+  };
+
   const handleSaveEdit = (updatedNotif) => {
-    setNotificationsData((prev) => ({
-      pastDue: prev.pastDue.map((n) =>
-        n.id === updatedNotif.id ? updatedNotif : n
-      ),
-      comingUp: prev.comingUp.map((n) =>
-        n.id === updatedNotif.id ? updatedNotif : n
-      ),
-    }));
+    const nowISO = new Date().toISOString().slice(0, 16);
+    const isPastDue = updatedNotif.datetime < nowISO;
+
+    if (isAddingNew) {
+      const allNotifications = [
+        ...notificationsData.pastDue,
+        ...notificationsData.comingUp,
+      ];
+      const maxId = allNotifications.reduce(
+        (max, n) => (n.id > max ? n.id : max),
+        0
+      );
+      updatedNotif.id = maxId + 1;
+
+      setNotificationsData((prev) => ({
+        pastDue: isPastDue ? [...prev.pastDue, updatedNotif] : prev.pastDue,
+        comingUp: !isPastDue ? [...prev.comingUp, updatedNotif] : prev.comingUp,
+      }));
+      setIsAddingNew(false);
+    } else {
+      setNotificationsData((prev) => {
+        const filteredPastDue = prev.pastDue.filter(
+          (n) => n.id !== updatedNotif.id
+        );
+        const filteredComingUp = prev.comingUp.filter(
+          (n) => n.id !== updatedNotif.id
+        );
+
+        return {
+          pastDue: isPastDue
+            ? [...filteredPastDue, updatedNotif]
+            : filteredPastDue,
+          comingUp: !isPastDue
+            ? [...filteredComingUp, updatedNotif]
+            : filteredComingUp,
+        };
+      });
+    }
     setEditingNotification(null);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingNotification(null);
+    setIsAddingNew(false);
   };
 
   return (
@@ -147,7 +203,16 @@ const MainApp = () => {
         </div>
 
         <div className="notifications">
-          <h2>Notifications</h2>
+          <div className="d-flex align-items-center justify-content-between add-task">
+            <h2>Notifications</h2>
+            <button
+              type="button"
+              aria-label="Add new task"
+              onClick={() => handleAdd()}
+            >
+              <Plus size={18} /> New
+            </button>
+          </div>
 
           <div className="notification-list">
             <h3>Past Due</h3>
@@ -248,7 +313,7 @@ const MainApp = () => {
         <EditPopup
           notification={editingNotification}
           onSave={handleSaveEdit}
-          onCancel={() => setEditingNotification(null)}
+          onCancel={handleCancelEdit}
         />
       )}
     </div>

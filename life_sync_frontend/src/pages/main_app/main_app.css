@@ -63,7 +63,8 @@
 }
 
 /* Shared button base styles */
-.search-bar button {
+.search-bar button,
+.add-task button {
   display: flex;
   align-items: center;
   justify-content: center;
