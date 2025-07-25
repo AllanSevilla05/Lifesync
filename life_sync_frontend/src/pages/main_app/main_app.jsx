@@ -139,6 +139,7 @@ const MainApp = () => {
     setProfileMenuOpen(false);
   };
 
+
   const handleViewCalendar = () => {
     navigate('/calendar');
   };
@@ -151,6 +152,7 @@ const MainApp = () => {
     navigate('/ai-log');
     setProfileMenuOpen(false);
   };
+
 
   const handleAdd = () => {
     setIsAddingNew(true);
