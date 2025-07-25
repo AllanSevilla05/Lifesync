@@ -14,6 +14,8 @@ import {
   Heart,
 } from "lucide-react";
 import EditPopup from "../../components/edit/EditPopup";
+import MiniAgenda from "../../components/mini_agenda/mini_agenda";
+import MoodTracker from "../../components/mood_tracker/mood_tracker";
 
 import "./main_app.css";
 
@@ -137,6 +139,21 @@ const MainApp = () => {
     setProfileMenuOpen(false);
   };
 
+
+  const handleViewCalendar = () => {
+    navigate('/calendar');
+  };
+
+  const handleViewMoodCalendar = () => {
+    navigate('/mood-calendar');
+  };
+
+  const handleViewAILog = () => {
+    navigate('/ai-log');
+    setProfileMenuOpen(false);
+  };
+
+
   const handleAdd = () => {
     setIsAddingNew(true);
     setEditingNotification({
@@ -216,7 +233,8 @@ const MainApp = () => {
             </button>
             {profileMenuOpen && (
               <div className="profile-dropdown">
-                <button onClick={handleSettingsClick}>Settings</button>
+                 <button onClick={handleViewAILog}>AI Log</button>
+                 <button onClick={handleSettingsClick}>Settings</button>
               </div>
             )}
           </div>
@@ -250,8 +268,8 @@ const MainApp = () => {
 
         <div className="notifications">
           <div className="d-flex align-items-center justify-content-between add-task">
-            <h2>Notifications</h2>
-            <button
+            <h2>Tasks</h2>
+            <button className="add-task-button"
               type="button"
               aria-label="Add new task"
               onClick={() => handleAdd()}
@@ -327,11 +345,13 @@ const MainApp = () => {
           </div>
         </div>
 
+        <MiniAgenda 
+          notificationsData={notificationsData}
+          onViewCalendar={handleViewCalendar}
+        />
+        <MoodTracker onViewMoodCalendar={handleViewMoodCalendar} />
+
         <div className="buttons-section">
-          <button type="button" aria-label="View Calendar">
-            <Calendar size={20} />
-            View Calendar
-          </button>
           <button type="button" aria-label="Productivity">
             <Activity size={20} />
             Productivity
