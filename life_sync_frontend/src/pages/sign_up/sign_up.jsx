@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./sign_up.css";
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -73,6 +74,7 @@ const SignUp = () => {
     // Handle sign up logic here
     console.log("Sign up attempt:", formData);
     // You would typically send this to your backend API
+    navigate("/main");
   };
 
   return (
