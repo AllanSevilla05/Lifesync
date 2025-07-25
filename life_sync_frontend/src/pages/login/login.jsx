@@ -25,7 +25,8 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="login-card">
-        <div className="login-header">
+        <div className="login-header d-flex flex-column" >
+          <img src="/images/LifeSyncLogo.png" alt="Logo" />
           <h1>Welcome Back</h1>
           <p>Sign in to your LifeSync account</p>
         </div>
