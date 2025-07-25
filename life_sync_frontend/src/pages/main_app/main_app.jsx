@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Mic,
   Search,
@@ -10,6 +11,7 @@ import {
   Wind,
   Plus,
   Bell,
+  Heart,
 } from "lucide-react";
 import EditPopup from "../../components/edit/EditPopup";
 
@@ -52,12 +54,20 @@ const MainApp = () => {
   const [searchText, setSearchText] = useState("");
   const [menuOpenId, setMenuOpenId] = useState(null);
   const [showAiSuggestion, setShowAiSuggestion] = useState(true);
+
+  const [notificationsData, setNotificationsData] = useState(initialNotifications);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  
+
   const [notificationsData, setNotificationsData] =
     useState(initialNotifications);
   const [editingNotification, setEditingNotification] = useState(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
 
+
   const menuRefs = useRef({});
+  const profileMenuRef = useRef(null);
+  const navigate = useNavigate();
 
   const formatDatetime = (dtString) =>
     `Reminder set for: ${new Date(dtString).toLocaleString()}`;
@@ -72,12 +82,27 @@ const MainApp = () => {
         ) {
           setMenuOpenId(null);
         }
-      }, 500); // delay allows the menu button click to fire first
+      }, 500);
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [menuOpenId]);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        profileMenuRef.current &&
+        !profileMenuRef.current.contains(event.target)
+      ) {
+        setProfileMenuOpen(false);
+      }
+    }
+    if (profileMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [profileMenuOpen]);
 
   const toggleMenu = (id) => {
     setMenuOpenId(menuOpenId === id ? null : id);
@@ -111,6 +136,11 @@ const MainApp = () => {
     if (notif) setEditingNotification(notif);
     setMenuOpenId(null);
   };
+
+
+  const handleSettingsClick = () => {
+    navigate('/settings');
+    setProfileMenuOpen(false);
 
   const handleAdd = () => {
     setIsAddingNew(true);
@@ -167,13 +197,35 @@ const MainApp = () => {
   const handleCancelEdit = () => {
     setEditingNotification(null);
     setIsAddingNew(false);
+
   };
 
   return (
     <div className="main-container">
       <div className="main-card">
-        <div className="main-header d-flex flex-column">
-          <img src="/images/LifeSyncLogo.png" alt="Logo" className="mx-auto" />
+        <div className="main-header">
+          <div className="header-logo">
+            <img src="/images/LifeSyncLogo.png" alt="LifeSync Logo" />
+          </div>
+          <div className="header-profile" ref={profileMenuRef}>
+            <button
+              className="profile-pic-btn"
+              onClick={() => setProfileMenuOpen((open) => !open)}
+              aria-label="Open profile menu"
+              style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}
+            >
+              <img
+                src="life_sync_frontend/src/assets/ProfilePicture.png"
+                alt="Profile"
+                className="profile-pic"
+              />
+            </button>
+            {profileMenuOpen && (
+              <div className="profile-dropdown">
+                <button onClick={handleSettingsClick}>Settings</button>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="search-bar position-relative">
