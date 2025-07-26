@@ -14,8 +14,13 @@ import {
   Plus,
   Bell,
   Heart,
+  Users,
+  Brain,
+  Target,
 } from "lucide-react";
 import EditPopup from "../../components/edit/EditPopup";
+import VoiceRecorder from "../../components/voice/VoiceRecorder";
+import OfflineIndicator from "../../components/offline/OfflineIndicator";
 
 import "./main_app.css";
 
@@ -41,6 +46,7 @@ const MainApp = () => {
   const [editingTask, setEditingTask] = useState(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [isProcessingVoice, setIsProcessingVoice] = useState(false);
+  const [showVoiceRecorder, setShowVoiceRecorder] = useState(false);
 
   const menuRefs = useRef({});
   const profileMenuRef = useRef(null);
@@ -168,7 +174,10 @@ const MainApp = () => {
   };
 
   const handleVoiceSearch = async () => {
-    if (!searchText.trim()) return;
+    if (!searchText.trim()) {
+      setShowVoiceRecorder(true);
+      return;
+    }
     
     setIsProcessingVoice(true);
     const result = await createTasksFromVoice(searchText);
@@ -182,6 +191,26 @@ const MainApp = () => {
     setIsProcessingVoice(false);
   };
 
+  const handleVoiceTranscript = (transcript) => {
+    setSearchText(transcript);
+  };
+
+  const handleVoiceRecordingComplete = async (transcript) => {
+    if (transcript.trim()) {
+      setIsProcessingVoice(true);
+      const result = await createTasksFromVoice(transcript);
+      
+      if (result.success) {
+        setSearchText("");
+        setShowVoiceRecorder(false);
+        // Show success message or handle the created tasks
+      } else {
+        console.error('Failed to process voice input:', result.error);
+      }
+      setIsProcessingVoice(false);
+    }
+  };
+
   // Get categorized tasks
   const pastDueTasks = getPastDueTasks();
   const upcomingTasks = getUpcomingTasks();
@@ -193,7 +222,9 @@ const MainApp = () => {
           <div className="header-logo">
             <img src="/images/LifeSyncLogo.png" alt="LifeSync Logo" />
           </div>
-          <div className="header-profile" ref={profileMenuRef}>
+          <div className="header-right">
+            <OfflineIndicator />
+            <div className="header-profile" ref={profileMenuRef}>
             <button
               className="profile-pic-btn"
               onClick={() => setProfileMenuOpen((open) => !open)}
@@ -201,7 +232,7 @@ const MainApp = () => {
               style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}
             >
               <img
-                src="life_sync_frontend/src/assets/ProfilePicture.png"
+                src="/src/assets/ProfilePicture.png"
                 alt="Profile"
                 className="profile-pic"
               />
@@ -212,6 +243,7 @@ const MainApp = () => {
                 <button onClick={handleLogout}>Logout</button>
               </div>
             )}
+            </div>
           </div>
         </div>
 
@@ -325,13 +357,45 @@ const MainApp = () => {
         </div>
 
         <div className="buttons-section">
-          <button type="button" aria-label="View Calendar">
+          <button 
+            type="button" 
+            aria-label="View Calendar"
+            onClick={() => navigate('/calendar')}
+          >
             <Calendar size={20} />
             View Calendar
           </button>
-          <button type="button" aria-label="Productivity">
+          <button 
+            type="button" 
+            aria-label="Teams"
+            onClick={() => navigate('/teams')}
+          >
+            <Users size={20} />
+            Teams
+          </button>
+          <button 
+            type="button" 
+            aria-label="Goals"
+            onClick={() => navigate('/goals')}
+          >
+            <Target size={20} />
+            Goals
+          </button>
+          <button 
+            type="button" 
+            aria-label="AI Scheduling"
+            onClick={() => navigate('/ai-scheduling')}
+          >
+            <Brain size={20} />
+            AI Schedule
+          </button>
+          <button 
+            type="button" 
+            aria-label="Productivity"
+            onClick={() => navigate('/analytics')}
+          >
             <Activity size={20} />
-            Productivity
+            Analytics
           </button>
         </div>
 
@@ -358,6 +422,29 @@ const MainApp = () => {
           onSave={handleSaveEdit}
           onCancel={handleCancelEdit}
         />
+      )}
+
+      {/* Voice Recorder Modal */}
+      {showVoiceRecorder && (
+        <div className="voice-modal-overlay">
+          <div className="voice-modal">
+            <div className="voice-modal-header">
+              <h3>Voice Input</h3>
+              <button
+                onClick={() => setShowVoiceRecorder(false)}
+                className="close-button"
+                aria-label="Close voice recorder"
+              >
+                ×
+              </button>
+            </div>
+            <VoiceRecorder
+              onTranscriptChange={handleVoiceTranscript}
+              onRecordingComplete={handleVoiceRecordingComplete}
+              placeholder="Speak your task or reminder..."
+            />
+          </div>
+        </div>
       )}
     </div>
   );

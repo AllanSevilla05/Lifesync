@@ -16,3 +16,14 @@ class MoodEntry(MoodEntryCreate):
     
     class Config:
         from_attributes = True
+
+class WellnessSuggestion(BaseModel):
+    action: str
+    duration: str
+    reasoning: str
+    urgency: str  # low, medium, high
+
+class WellnessInsights(BaseModel):
+    suggestions: List[WellnessSuggestion]
+    overall_assessment: str
+    focus_area: str  # energy, mood, stress, balance

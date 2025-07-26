@@ -9,6 +9,45 @@ class AIService:
         self.ollama_base_url = settings.ollama_base_url
         self.ollama_model = settings.ollama_model
     
+    async def generate_response(self, prompt: str) -> Dict[str, Any]:
+        """Generic method to generate AI responses"""
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.post(
+                    f"{self.ollama_base_url}/api/generate",
+                    json={
+                        "model": self.ollama_model,
+                        "prompt": prompt,
+                        "stream": False,
+                        "options": {
+                            "temperature": 0.7,
+                            "max_tokens": 1000
+                        }
+                    },
+                    timeout=20.0
+                )
+                
+                if response.status_code == 200:
+                    ollama_response = response.json()
+                    ai_output = ollama_response.get("response", "")
+                    
+                    # Try to parse JSON response
+                    try:
+                        json_start = ai_output.find('{')
+                        json_end = ai_output.rfind('}') + 1
+                        if json_start != -1 and json_end != 0:
+                            clean_json = ai_output[json_start:json_end]
+                            return json.loads(clean_json)
+                        else:
+                            return {"response": ai_output, "raw": True}
+                    except json.JSONDecodeError:
+                        return {"response": ai_output, "raw": True}
+                else:
+                    return {"error": f"API error: {response.status_code}", "response": ""}
+                    
+        except Exception as e:
+            return {"error": str(e), "response": ""}
+    
     async def optimize_daily_schedule(
         self, 
         tasks: List[Dict], 

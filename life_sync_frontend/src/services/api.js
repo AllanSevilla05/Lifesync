@@ -42,7 +42,28 @@ class ApiService {
 
       if (!response.ok) {
         const error = await response.json().catch(() => ({ detail: 'Network error' }));
-        throw new Error(error.detail || `HTTP error! status: ${response.status}`);
+        
+        // Handle different error formats
+        let errorMessage;
+        
+        if (error.detail) {
+          // Standard FastAPI error with detail
+          if (Array.isArray(error.detail)) {
+            // Pydantic validation errors
+            errorMessage = error.detail.map(err => `${err.loc.join('.')}: ${err.msg}`).join(', ');
+          } else if (typeof error.detail === 'string') {
+            errorMessage = error.detail;
+          } else {
+            errorMessage = JSON.stringify(error.detail);
+          }
+        } else if (Array.isArray(error)) {
+          // Direct array of Pydantic validation errors
+          errorMessage = error.map(err => `${err.loc.join('.')}: ${err.msg}`).join(', ');
+        } else {
+          errorMessage = `HTTP error! status: ${response.status}`;
+        }
+        
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
@@ -67,14 +88,12 @@ class ApiService {
   }
 
   async login(credentials) {
-    const formData = new FormData();
-    formData.append('username', credentials.email);
-    formData.append('password', credentials.password);
-
     const response = await this.request('/auth/login', {
       method: 'POST',
-      headers: {}, // Remove Content-Type to let browser set it for FormData
-      body: formData,
+      body: {
+        username: credentials.email,
+        password: credentials.password,
+      },
     });
 
     if (response.access_token) {

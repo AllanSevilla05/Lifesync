@@ -19,7 +19,7 @@ async def create_task(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    db_task = Task(**task.dict(), user_id=current_user.id)
+    db_task = Task(**task.model_dump(), user_id=current_user.id)
     db.add(db_task)
     db.commit()
     db.refresh(db_task)
@@ -63,7 +63,7 @@ async def update_task(
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
     
-    update_data = task_update.dict(exclude_unset=True)
+    update_data = task_update.model_dump(exclude_unset=True)
     
     # Set completion time if task is being marked as completed
     if update_data.get("status") == "completed" and task.status != "completed":
@@ -141,7 +141,7 @@ async def task_check_in(
     
     db_check_in = TaskCheckIn(
         task_id=task_id,
-        **check_in.dict()
+        **check_in.model_dump()
     )
     db.add(db_check_in)
     

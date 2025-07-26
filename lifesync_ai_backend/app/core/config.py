@@ -23,9 +23,7 @@ class Settings(BaseSettings):
     # Notifications
     redis_url: str = "redis://localhost:6379"
     
-    class Config:
-        env_file = ".env"
-        extra = "allow"
+    model_config = {"env_file": ".env", "extra": "allow"}
 
 settings = Settings()
 
