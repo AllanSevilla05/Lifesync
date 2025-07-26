@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./sign_up.css";
+import { useAuth } from '../../contexts/AuthContext';
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const { register } = useAuth();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -62,7 +64,7 @@ const SignUp = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formErrors = validateForm();
@@ -71,10 +73,21 @@ const SignUp = () => {
       return;
     }
 
-    // Handle sign up logic here
-    console.log("Sign up attempt:", formData);
-    // You would typically send this to your backend API
-    navigate("/main");
+    try {
+      // Format data for API
+      const userData = {
+        username: `${formData.firstName}${formData.lastName}`,
+        email: formData.email,
+        password: formData.password,
+        full_name: `${formData.firstName} ${formData.lastName}`
+      };
+
+      await register(userData);
+      navigate("/login"); // Redirect to login after successful registration
+    } catch (error) {
+      console.error("Registration failed:", error);
+      setErrors({ general: error.message || "Registration failed" });
+    }
   };
 
   return (
