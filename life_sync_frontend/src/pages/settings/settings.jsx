@@ -1,9 +1,13 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, User, Bell, Moon, Shield, HelpCircle } from 'lucide-react';
+import { ArrowLeft, User, Bell, Moon, Shield, HelpCircle, Download, Users } from 'lucide-react';
+import DataExport from './data-export/DataExport';
+import ThemeToggle from '../../components/theme/ThemeToggle';
 import './settings.css';
 
 const SettingsPage = () => {
   const navigate = useNavigate();
+  const [showDataExport, setShowDataExport] = useState(false);
 
   const handleBackClick = () => {
     navigate('/main');
@@ -12,6 +16,26 @@ const SettingsPage = () => {
   const handleProfileSettingsClick = () => {
     navigate('/profile-settings');
   };
+
+  if (showDataExport) {
+    return (
+      <div className="main-container">
+        <div className="main-card">
+          <div className="settings-header">
+            <button 
+              onClick={() => setShowDataExport(false)}
+              className="back-button"
+              aria-label="Go back to settings"
+            >
+              <ArrowLeft size={24} />
+            </button>
+            <h1>Export Data</h1>
+          </div>
+          <DataExport />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="main-container">
@@ -46,21 +70,39 @@ const SettingsPage = () => {
             </div>
             <div className="settings-item">
               <Moon size={20} />
-              <span>Dark Mode <span style={{ fontStyle: 'italic' }}>(Future Feature)</span></span>
-              <label className="toggle-switch">
-                <input type="checkbox" />
-                <span className="slider"></span>
-              </label>
+              <div className="setting-content">
+                <span>Theme</span>
+                <p className="setting-description">Choose between light, dark, or system theme</p>
+              </div>
+              <ThemeToggle variant="dropdown" showLabels={true} />
             </div>
           </div>
 
           <div className="settings-section">
-            <h2>Support</h2>
+            <h2>Collaboration</h2>
+            <div className="settings-item">
+              <Users size={20} />
+              <span>Teams & Sharing</span>
+              <button onClick={() => navigate('/teams')}>Manage</button>
+            </div>
+          </div>
+
+          <div className="settings-section">
+            <h2>Data & Privacy</h2>
+            <div className="settings-item">
+              <Download size={20} />
+              <span>Export Data</span>
+              <button onClick={() => setShowDataExport(true)}>Export</button>
+            </div>
             <div className="settings-item">
               <Shield size={20} />
               <span>Privacy Policy</span>
               <button onClick={() => alert('Privacy policy')}>View</button>
             </div>
+          </div>
+
+          <div className="settings-section">
+            <h2>Support</h2>
             <div className="settings-item">
               <HelpCircle size={20} />
               <span>Help & Support</span>

@@ -21,6 +21,8 @@ class User(Base):
     tasks = relationship("Task", back_populates="owner")
     mood_entries = relationship("MoodEntry", back_populates="user")
     documents = relationship("Document", back_populates="user")
+    habits = relationship("Habit", back_populates="owner")
+    goals = relationship("Goal", back_populates="user", cascade="all, delete-orphan")
 
 class Task(Base):
     __tablename__ = "tasks"

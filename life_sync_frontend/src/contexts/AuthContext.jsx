@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useMemo } from 'react';
+import { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
 import ApiService from '../services/api';
 
 const AuthContext = createContext({});
@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }) => {
     initializeAuth();
   }, []);
 
-  const login = async (credentials) => {
+  const login = useCallback(async (credentials) => {
     try {
       setLoading(true);
       const response = await ApiService.login(credentials);
@@ -59,9 +59,9 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const register = async (userData) => {
+  const register = useCallback(async (userData) => {
     try {
       setLoading(true);
       const response = await ApiService.register(userData);
@@ -84,9 +84,9 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [login]);
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     try {
       await ApiService.logout();
       setUser(null);
@@ -97,7 +97,7 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
       setIsAuthenticated(false);
     }
-  };
+  }, []);
 
   const value = useMemo(() => ({
     user,

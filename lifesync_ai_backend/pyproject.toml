@@ -23,4 +23,9 @@ dependencies = [
     "alembic==1.12.1",
     "pytest==7.4.3",
     "pytest-asyncio==0.21.1",
+    "numpy>=2.3.2",
+    "requests>=2.32.4",
+    "node>=1.2.2",
+    "npm>=0.1.1",
+    "bcrypt>=4.3.0",
 ]
