@@ -1,2 +1,26 @@
-.vscode/settings.json
-life_sync_frontend/package-lock.json
+# IDE / Editor settings
+.vscode/
+.idea/
+
+# Node.js lockfiles (optional: track if you want consistent installs)
+# life_sync_frontend/package-lock.json
+
+# Claude AI config
+.claude/
+
+# Python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Virtual environment
+.venv/
+
+# Environment variables (if using)
+.env
+
+# macOS system files
+.DS_Store
+
+# Logs
+*.log

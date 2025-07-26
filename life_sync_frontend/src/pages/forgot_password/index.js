@@ -1,3 +1,2 @@
-import ForgotPassword from "./forgot_password";
-
+import ForgotPassword from './forgot_password';
 export default ForgotPassword;

@@ -16,6 +16,7 @@ import {
 import EditPopup from "../../components/edit/EditPopup";
 import MiniAgenda from "../../components/mini_agenda/mini_agenda";
 import MoodTracker from "../../components/mood_tracker/mood_tracker";
+import VoiceInput from "../../components/VoiceInput";
 
 import "./main_app.css";
 
@@ -62,6 +63,7 @@ const MainApp = () => {
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [editingNotification, setEditingNotification] = useState(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
+  const [showVoiceInput, setShowVoiceInput] = useState(false);
 
   const menuRefs = useRef({});
   const profileMenuRef = useRef(null);
@@ -98,8 +100,8 @@ const MainApp = () => {
     }
     if (profileMenuOpen) {
       document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
     }
-    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [profileMenuOpen]);
 
   const toggleMenu = (id) => {
@@ -210,6 +212,32 @@ const MainApp = () => {
     setIsAddingNew(false);
   };
 
+  const handleVoiceToggle = () => {
+    setShowVoiceInput(!showVoiceInput);
+  };
+
+  const handleTasksCreated = (newTasks) => {
+    // Convert API tasks to notification format
+    const newNotifications = newTasks.map((task, index) => ({
+      id: Date.now() + index, // Generate unique ID
+      icon: <Activity size={24} color="#667eea" />,
+      title: task.title,
+      datetime: task.due_date || new Date().toISOString().slice(0, 16),
+    }));
+
+    setNotificationsData((prev) => ({
+      ...prev,
+      comingUp: [...prev.comingUp, ...newNotifications],
+    }));
+
+    setShowVoiceInput(false);
+  };
+
+  const handleVoiceError = (error) => {
+    console.error('Voice input error:', error);
+    // You could show a toast notification here
+  };
+
   return (
     <div className="main-container">
       <div className="main-card">
@@ -264,11 +292,19 @@ const MainApp = () => {
             type="button"
             className="voice-button"
             aria-label="Voice search"
+            onClick={handleVoiceToggle}
           >
             <Mic size={18} />
             Voice
           </button>
         </div>
+
+        {showVoiceInput && (
+          <VoiceInput
+            onTasksCreated={handleTasksCreated}
+            onError={handleVoiceError}
+          />
+        )}
 
         <div className="notifications">
           <div className="d-flex align-items-center justify-content-between add-task">
@@ -380,6 +416,7 @@ const MainApp = () => {
           </div>
         )}
       </div>
+
       {editingNotification && (
         <EditPopup
           notification={editingNotification}

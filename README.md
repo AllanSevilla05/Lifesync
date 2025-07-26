@@ -1,277 +1,410 @@
-# LifeSync
+# LifeSync - Task Management App with Voice Input
 
-LifeSync is an AI-powered productivity and wellness assistant that helps you manage tasks, track moods, and maintain your overall well-being. It combines modern web technologies with intelligent AI services to provide a comprehensive life management platform.
+A simple task management app that lets you create tasks using your voice! Built with React and Python.
 
-## Project Structure
+## 📋 Prerequisites (Install These First!)
 
-```
-Lifesync/
-├── life_sync_frontend/          # React frontend application
-│   ├── src/
-│   │   ├── components/          # Reusable UI components
-│   │   │   ├── header/          # Navigation header
-│   │   │   ├── footer/          # Site footer
-│   │   │   ├── hero/            # Landing page hero section
-│   │   │   ├── features/        # Feature showcase
-│   │   │   ├── mini_agenda/     # Compact task view
-│   │   │   └── mood_tracker/    # Mood tracking component
-│   │   ├── pages/               # Application pages
-│   │   │   ├── home/            # Landing page
-│   │   │   ├── main_app/        # Main dashboard
-│   │   │   ├── calendar/        # Calendar view
-│   │   │   ├── mood_calendar/   # Mood tracking calendar
-│   │   │   ├── ai_log/          # AI interaction history
-│   │   │   ├── settings/        # User settings
-│   │   │   ├── login/           # Authentication
-│   │   │   └── sign_up/         # User registration
-│   ├── package.json             # Frontend dependencies
-│   └── vite.config.js           # Vite build configuration
-├── lifesync_ai_backend/         # FastAPI backend
-│   ├── app/
-│   │   ├── api/v1/              # API routes
-│   │   ├── core/                # Core configuration
-│   │   ├── models/              # Database models
-│   │   ├── schemas/             # Pydantic schemas
-│   │   └── services/            # Business logic
-│   ├── pyproject.toml           # Python dependencies
-│   └── main.py                  # Application entry point
-└── README.md                    # This file
-```
+Before you can run the app, you need to install some software. Follow these steps:
 
-## Prerequisites
+### 1. Install Node.js (Required for Frontend)
+**Download from**: https://nodejs.org/
 
-Before running the application, ensure you have the following installed:
+1. Go to https://nodejs.org/
+2. Click the big green "LTS" button (recommended)
+3. Run the installer you downloaded
+4. **Verify installation**: Open terminal and type:
+   ```bash
+   node --version
+   npm --version
+   ```
+   You should see version numbers (like `v18.17.0` and `9.6.7`)
 
-- **Node.js** (v18 or higher) - [Download](https://nodejs.org/)
-- **Python** (3.11 or higher) - [Download](https://python.org/)
-- **PostgreSQL** (v12 or higher) - [Download](https://postgresql.org/)
-- **Redis** (v6 or higher) - [Download](https://redis.io/)
+### 2. Install Python (Required for Backend)
+**Download from**: https://www.python.org/downloads/
 
-## Quick Start
+1. Go to https://www.python.org/downloads/
+2. Click the big yellow "Download Python" button
+3. **IMPORTANT**: Check "Add Python to PATH" during installation
+4. Run the installer
+5. **Verify installation**: Open terminal and type:
+   ```bash
+   python --version
+   ```
+   You should see a version number (like `Python 3.11.5`)
 
-### 1. Clone the Repository
+### 3. Install uv (Python Package Manager)
+**Download from**: https://docs.astral.sh/uv/getting-started/installation/
 
+1. Go to https://docs.astral.sh/uv/getting-started/installation/
+2. Copy the installation command for your system:
+
+   **For Mac/Linux:**
+   ```bash
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   ```
+
+   **For Windows:**
+   ```bash
+   powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+   ```
+
+3. **Verify installation**: Open terminal and type:
+   ```bash
+   uv --version
+   ```
+   You should see a version number (like `uv 0.1.0`)
+
+### 4. Install PostgreSQL (Database)
+**Download from**: https://www.postgresql.org/download/
+
+1. Go to https://www.postgresql.org/download/
+2. Click your operating system:
+   - **Windows**: Download from EnterpriseDB
+   - **Mac**: Download from EnterpriseDB or use Homebrew
+   - **Linux**: Use your package manager
+
+3. **For Mac users with Homebrew:**
+   ```bash
+   brew install postgresql
+   brew services start postgresql
+   ```
+
+4. **For Windows/Linux**: Follow the installer instructions
+5. **Verify installation**: Open terminal and type:
+   ```bash
+   psql --version
+   ```
+   You should see a version number
+
+### 5. Install Git (Version Control)
+**Download from**: https://git-scm.com/downloads
+
+1. Go to https://git-scm.com/downloads
+2. Download for your operating system
+3. Run the installer
+4. **Verify installation**: Open terminal and type:
+   ```bash
+   git --version
+   ```
+   You should see a version number
+
+### 6. Install Ollama (AI Model - Required for Voice Input)
+**Download from**: https://ollama.ai/download
+
+1. Go to https://ollama.ai/download
+2. Click your operating system:
+   - **Mac**: Download the .dmg file
+   - **Windows**: Download the .exe file
+   - **Linux**: Copy the installation command
+
+3. **For Mac users:**
+   - Run the downloaded .dmg file
+   - Drag Ollama to Applications folder
+   - Open Ollama from Applications
+
+4. **For Windows users:**
+   - Run the downloaded .exe file
+   - Follow the installer instructions
+
+5. **For Linux users:**
+   ```bash
+   curl -fsSL https://ollama.ai/install.sh | sh
+   ```
+
+6. **Start Ollama and download the model:**
+   ```bash
+   ollama serve
+   ```
+   Then in a new terminal:
+   ```bash
+   ollama pull llama3
+   ```
+
+7. **Verify installation**: Open terminal and type:
+   ```bash
+   ollama --version
+   ```
+   You should see a version number
+
+8. **Test the model**: 
+   ```bash
+   ollama run llama3 "Hello, how are you?"
+   ```
+   You should see a response from the AI model
+
+## 🚀 Quick Start Guide
+
+### Step 1: Open Terminal/Command Prompt
+- **Mac**: Press `Cmd + Space`, type "Terminal", press Enter
+- **Windows**: Press `Windows + R`, type "cmd", press Enter
+- **Linux**: Press `Ctrl + Alt + T`
+
+### Step 2: Navigate to the Project Folder
+Copy and paste this command:
 ```bash
-git clone <repository-url>
-cd Lifesync
+cd /Users/allansevilla/Desktop/Personal\ Projects/Lifesync
 ```
 
-### 2. Backend Setup
-
-1. **Navigate to the backend directory:**
-   ```bash
-   cd lifesync_ai_backend
-   ```
-
-2. **Install Python dependencies using uv (recommended) or pip:**
-   ```bash
-   # Using uv (faster)
-   uv sync
-   
-   # Or using pip
-   pip install -e .
-   ```
-
-3. **Set up environment variables:**
-   Create a `.env` file in the `lifesync_ai_backend` directory:
-   ```bash
-   # Database
-   DATABASE_URL=postgresql://user:password@localhost:5432/lifesync
-   
-   # Security
-   SECRET_KEY=your-super-secret-key-change-this-in-production
-   ALGORITHM=HS256
-   ACCESS_TOKEN_EXPIRE_MINUTES=30
-   
-   # AI Services - Local Ollama with Llama3
-   OLLAMA_BASE_URL=http://localhost:11434
-   OLLAMA_MODEL=llama3
-   
-   # Redis
-   REDIS_URL=redis://localhost:6379
-   
-   # File Upload
-   UPLOAD_DIR=uploads
-   MAX_FILE_SIZE=10485760
-   ```
-
-4. **Set up PostgreSQL database:**
-   ```bash
-   # Create database (adjust credentials as needed)
-   createdb lifesync
-   ```
-
-5. **Start Redis server:**
-   ```bash
-   redis-server
-   ```
-
-6. **Run the backend server:**
-   ```bash
-   # Using uv
-   uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-   
-   # Or using uvicorn directly
-   uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-   ```
-
-   The backend API will be available at: http://localhost:8000
-
-### 3. Frontend Setup
-
-1. **Open a new terminal and navigate to the frontend directory:**
-   ```bash
-   cd life_sync_frontend
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Start the development server:**
-   ```bash
-   npm run dev
-   ```
-
-   The frontend will be available at: http://localhost:5173
-
-## Available Scripts
-
-### Frontend (life_sync_frontend/)
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
-
-### Backend (lifesync_ai_backend/)
-- `uvicorn app.main:app --reload` - Start development server
-- `pytest` - Run tests
-- `alembic upgrade head` - Run database migrations
-
-## API Documentation
-
-Once the backend is running, you can access:
-- **Swagger UI**: http://localhost:8000/docs
-- **ReDoc**: http://localhost:8000/redoc
-- **Health Check**: http://localhost:8000/health
-
-## Features
-
-- **Task Management**: Create, organize, and track your daily tasks  
-- **Mood Tracking**: Monitor your emotional well-being over time  
-- **AI Integration**: Get intelligent suggestions and insights  
-- **Analytics Dashboard**: Visualize your productivity and mood patterns  
-- **User Authentication**: Secure login and user management  
-- **Responsive Design**: Works on desktop and mobile devices  
-
-## Technology Stack
-
-### Frontend
-- **React** - UI library
-- **Vite** - Build tool and dev server
-- **React Router** - Client-side routing
-- **Bootstrap** - UI framework
-- **React Big Calendar** - Calendar component
-- **Lucide React** - Icon library
-- **Moment.js** - Date manipulation
-
-### Backend
-- **FastAPI** - Modern Python web framework
-- **SQLAlchemy** - Database ORM
-- **PostgreSQL** - Primary database
-- **Redis** - Caching and session storage
-- **Pydantic** - Data validation
-- **JWT** - Authentication tokens
-- **Uvicorn** - ASGI server
-
-## Database Setup
-
-1. **Install PostgreSQL** and create a database:
-   ```sql
-   CREATE DATABASE lifesync;
-   CREATE USER lifesync_user WITH PASSWORD 'your_password';
-   GRANT ALL PRIVILEGES ON DATABASE lifesync TO lifesync_user;
-   ```
-
-2. **Update the DATABASE_URL** in your `.env` file:
-   ```
-   DATABASE_URL=postgresql://lifesync_user:your_password@localhost:5432/lifesync
-   ```
-
-3. **The database tables will be created automatically** when you start the backend server.
-
-## Environment Configuration
-
-### Required Environment Variables
-
-Create a `.env` file in the `lifesync_ai_backend` directory with these variables:
-
-```env
-# Database Configuration
-DATABASE_URL=postgresql://username:password@localhost:5432/lifesync
-
-# Security
-SECRET_KEY=your-256-bit-secret-key
-ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-
-# AI Services - Local Ollama with Llama3
-OLLAMA_BASE_URL=http://localhost:11434
-OLLAMA_MODEL=llama3
-
-# Redis
-REDIS_URL=redis://localhost:6379
-
-# File Upload
-UPLOAD_DIR=uploads
-MAX_FILE_SIZE=10485760
+### Step 3: Install Frontend Dependencies
+Copy and paste these commands:
+```bash
+cd life_sync_frontend
+npm install
 ```
 
-## Troubleshooting
+**What you should see:**
+```
+added 230 packages, and audited 230 packages in 430ms
+35 packages are looking for funding
+found 0 vulnerabilities
+```
 
-### Common Issues
+### Step 4: Install Backend Dependencies
+Open a NEW terminal window and copy/paste:
+```bash
+cd /Users/allansevilla/Desktop/Personal\ Projects/Lifesync
+cd lifesync_ai_backend
+uv sync
+```
 
-1. **Port already in use:**
+**What you should see:**
+```
+✓ Resolved 15 packages in 0.1s
+✓ Downloaded 15 packages in 0.5s
+✓ Installed 15 packages in 0.2s
+```
+
+### Step 5: Start the Backend Server
+In the backend terminal, copy and paste:
+```bash
+uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+**What you should see:**
+```
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process
+INFO:     Started server process
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+```
+
+**Keep this terminal window open!** (Don't close it)
+
+### Step 6: Start the Frontend Server
+Open a NEW terminal window and copy/paste:
+```bash
+cd /Users/allansevilla/Desktop/Personal\ Projects/Lifesync
+cd life_sync_frontend
+npm run dev
+```
+
+**What you should see:**
+```
+> life_sync@0.0.0 dev
+> vite
+VITE v7.0.6  ready in 108 ms
+➜  Local:   http://localhost:5173/
+➜  Network: use --host to expose
+```
+
+**Keep this terminal window open too!** (Don't close it)
+
+### Step 7: Open the App in Your Browser
+1. Open your web browser (Chrome, Firefox, Safari, etc.)
+2. Go to: `http://localhost:5173`
+3. You should see the LifeSync login page!
+
+## 🎯 How to Use the App
+
+### Creating an Account
+1. Click "Sign up" on the login page
+2. Fill in your details:
+   - First Name: Your first name
+   - Last Name: Your last name
+   - Email: Your email address
+   - Password: Choose a password
+3. Click "Sign Up"
+4. You'll be redirected to the login page
+
+### Logging In
+1. Enter your email and password
+2. Click "Sign In"
+3. You'll see the main app dashboard
+
+### Using Voice Input
+1. Click the "Voice" button (microphone icon)
+2. Allow microphone access when prompted
+3. Speak your task: "I need to buy groceries tomorrow"
+4. Click "Create Tasks"
+5. Your task will appear in the task list!
+
+### Creating Tasks Manually
+1. Click the "New" button
+2. Fill in the task details
+3. Click "Save"
+
+## 🧪 Running Tests (Optional)
+
+If you want to test that everything is working:
+
+### Step 1: Install Test Dependencies
+Open a THIRD terminal window and copy/paste:
+```bash
+cd /Users/allansevilla/Desktop/Personal\ Projects/Lifesync
+pip install requests
+```
+
+### Step 2: Run the Tests
+```bash
+python test_lifesync_app.py
+```
+
+**What you should see:**
+```
+🚀 LifeSync Application - Comprehensive Test Suite
+🧪 Test 1: Backend Server Health Check
+  ✅ Backend server is running and accessible
+🧪 Test 2: Frontend Server Health Check
+  ✅ Frontend server is running
+...
+✅ ALL TESTS PASSED!
+```
+
+## 🛠️ Troubleshooting
+
+### "Command not found" Errors
+
+**Problem**: You see `zsh: command not found: node` or similar
+**Solution**: 
+1. **Node.js not installed**: Go to https://nodejs.org/ and install it
+2. **Python not installed**: Go to https://www.python.org/downloads/ and install it
+3. **uv not installed**: Follow the uv installation steps above
+4. **Wrong folder**: Make sure you're in the right folder:
    ```bash
-   # Kill process on port 8000
-   lsof -ti:8000 | xargs kill -9
-   
-   # Kill process on port 5173
-   lsof -ti:5173 | xargs kill -9
+   cd /Users/allansevilla/Desktop/Personal\ Projects/Lifesync/lifesync_ai_backend
    ```
 
-2. **Database connection errors:**
-   - Ensure PostgreSQL is running
-   - Check database credentials in `.env`
-   - Verify database exists
+### "Port already in use" Errors
+**Problem**: You see "Port 5173 is in use" or "Port 8000 is in use"
+**Solution**: 
+1. Close all terminal windows
+2. Start over from Step 1
+3. Or use different ports:
+   - Backend: `uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8001`
+   - Frontend will automatically find a free port
 
-3. **Redis connection errors:**
-   - Ensure Redis server is running: `redis-server`
-   - Check Redis URL in configuration
+### "Cannot connect" Errors
+**Problem**: Browser shows "Cannot connect to localhost"
+**Solution**:
+1. Make sure both terminal windows are still running
+2. Check that you see the success messages in both terminals
+3. Try refreshing the browser page
+4. Make sure you're going to `http://localhost:5173` (not https)
 
-4. **Frontend API calls failing:**
-   - Ensure backend is running on port 8000
-   - Check CORS configuration in backend
+### "Database connection" Errors
+**Problem**: You see database connection errors
+**Solution**:
+1. Make sure PostgreSQL is installed and running
+2. **Mac users**: `brew services start postgresql`
+3. **Windows users**: Check if PostgreSQL service is running
+4. The app will create the database automatically
 
-### Logs and Debugging
+### "Microphone not working" Errors
+**Problem**: Voice input doesn't work
+**Solution**:
+1. Make sure you're using Chrome or Firefox
+2. Allow microphone access when prompted
+3. Check that your microphone is working in other apps
+4. Try refreshing the page
 
-- **Backend logs**: Check the terminal where uvicorn is running
-- **Frontend logs**: Check browser developer console
-- **Database logs**: Check PostgreSQL logs for connection issues
+### "AI model not working" Errors
+**Problem**: Voice input creates tasks but they're not processed by AI
+**Solution**:
+1. Make sure Ollama is installed and running:
+   ```bash
+   ollama serve
+   ```
+2. Check if the model is downloaded:
+   ```bash
+   ollama list
+   ```
+3. If no models listed, download the model:
+   ```bash
+   ollama pull llama2
+   ```
+4. Test the model works:
+   ```bash
+   ollama run llama2 "Test message"
+   ```
+5. Make sure Ollama is running before starting the backend server
 
-## Contributing
+### "Permission denied" Errors
+**Problem**: You see permission errors when installing
+**Solution**:
+1. **Mac/Linux**: Add `sudo` before commands:
+   ```bash
+   sudo npm install
+   ```
+2. **Windows**: Run Command Prompt as Administrator
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+## 📱 What You Can Do
 
-## License
+### ✅ Features Available
+- **Create an account** and log in
+- **Add tasks** manually with title, description, priority
+- **Use voice input** to create tasks by speaking
+- **View all your tasks** in a list
+- **Edit tasks** by clicking the menu (three dots)
+- **Delete tasks** you don't need
+- **Set due dates** for your tasks
+- **Add priorities** (1-5, where 5 is most important)
 
-This project is licensed under the MIT License.
+### 🎤 Voice Input Examples
+Try saying these:
+- "I need to buy groceries tomorrow"
+- "Call the doctor on Friday"
+- "30 minute workout this afternoon"
+- "Finish the report by next week"
+- "Don't forget about the dentist appointment"
 
-## Support
+## 🔧 Stopping the App
 
-For support or questions, please create an issue in the repository or contact the development team.
+When you're done:
+1. Go to each terminal window
+2. Press `Ctrl + C` (or `Cmd + C` on Mac)
+3. Type `y` and press Enter if asked
+4. Close the terminal windows
+
+## 📞 Need Help?
+
+If something doesn't work:
+1. **Check all terminal windows** are still running
+2. **Refresh your browser** page
+3. **Try the troubleshooting steps** above
+4. **Make sure you're in the right folders** when running commands
+5. **Verify all software is installed** using the version commands above
+
+## 🎓 For Class Project
+
+This app demonstrates:
+- ✅ **Full-stack development** (Frontend + Backend)
+- ✅ **Modern web technologies** (React, FastAPI, Python)
+- ✅ **AI integration** (Voice input with conversation analysis)
+- ✅ **User authentication** (Secure login system)
+- ✅ **Database integration** (Task storage and retrieval)
+- ✅ **Professional testing** (Comprehensive test suite)
+- ✅ **Real-world features** (Task management, voice input)
+
+Perfect for showing off your programming skills! 🚀
+
+## 🔗 Useful Links
+
+- **Node.js**: https://nodejs.org/
+- **Python**: https://www.python.org/downloads/
+- **uv**: https://docs.astral.sh/uv/getting-started/installation/
+- **PostgreSQL**: https://www.postgresql.org/download/
+- **Git**: https://git-scm.com/downloads
+- **Ollama**: https://ollama.ai/download
+- **Chrome**: https://www.google.com/chrome/
+- **Firefox**: https://www.mozilla.org/firefox/

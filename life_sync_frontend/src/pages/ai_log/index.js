@@ -1,1 +1,2 @@
-export {default as MoodCalendarPage} from './MoodCalendarPage';
+import AILog from './ai_log';
+export default AILog;
