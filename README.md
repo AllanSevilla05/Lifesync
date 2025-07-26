@@ -42,12 +42,17 @@ The backend will be available at: http://localhost:8000
 cd life_sync_frontend
 ```
 
-2. Install dependencies:
+2. Powershell Execution policy:
+```bash
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+3. Install dependencies:
 ```bash
 npm install
 ```
 
-3. Start the development server:
+4. Start the development server:
 ```bash
 npm run dev
 ```
