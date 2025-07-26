@@ -1,0 +1,268 @@
+.voice-recorder {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.voice-recorder.unsupported {
+  background: #fef2f2;
+  border: 1px solid #fed7d7;
+}
+
+.voice-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.mic-button {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  background: #667eea;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  overflow: visible;
+}
+
+.mic-button:hover {
+  background: #5a67d8;
+  transform: scale(1.05);
+}
+
+.mic-button.listening {
+  background: #ef4444;
+  animation: pulse 2s infinite;
+}
+
+.mic-button.error {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.pulse-ring {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border: 2px solid #ef4444;
+  border-radius: 50%;
+  animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+.clear-button {
+  background: #f3f4f6;
+  color: #6b7280;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.clear-button:hover {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.status-indicator {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+  min-height: 24px;
+}
+
+.listening-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #eff6ff;
+  color: #2563eb;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.error-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fef2f2;
+  color: #dc2626;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.audio-visualizer {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 8px;
+}
+
+.audio-visualizer .bar {
+  width: 3px;
+  height: 12px;
+  background: #2563eb;
+  border-radius: 2px;
+  animation: visualizer 1.2s ease-in-out infinite;
+}
+
+.audio-visualizer .bar:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.audio-visualizer .bar:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.audio-visualizer .bar:nth-child(4) {
+  animation-delay: 0.6s;
+}
+
+@keyframes visualizer {
+  0%, 100% {
+    height: 6px;
+    opacity: 0.4;
+  }
+  50% {
+    height: 16px;
+    opacity: 1;
+  }
+}
+
+.transcript-display {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 15px;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.transcript-text {
+  color: #1f2937;
+  font-size: 1rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.placeholder-text {
+  color: #9ca3af;
+  font-style: italic;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.voice-tips {
+  background: #f0f9ff;
+  border-radius: 8px;
+  padding: 16px;
+  border-left: 4px solid #0ea5e9;
+}
+
+.voice-tips h4 {
+  margin: 0 0 8px 0;
+  color: #0c4a6e;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.voice-tips ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #0369a1;
+  font-size: 0.875rem;
+}
+
+.voice-tips li {
+  margin-bottom: 4px;
+}
+
+.voice-tips li:last-child {
+  margin-bottom: 0;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #dc2626;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .voice-recorder {
+    padding: 15px;
+    margin: 0 15px;
+  }
+  
+  .mic-button {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .pulse-ring {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .transcript-display {
+    padding: 12px;
+  }
+  
+  .voice-tips {
+    padding: 12px;
+  }
+  
+  .voice-tips h4 {
+    font-size: 0.85rem;
+  }
+  
+  .voice-tips ul {
+    font-size: 0.8rem;
+  }
+}
