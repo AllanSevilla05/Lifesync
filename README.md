@@ -132,6 +132,53 @@ Before you can run the app, you need to install some software. Follow these step
    ```
    You should see a response from the AI model
 
+## Database Setup
+
+1. **Install PostgreSQL** and create a database:
+   ```sql
+   Go to new terminal and input "psql -U postgres"
+   Input password for Postgres used when downloading Postgres
+   Once Postgres is open input:
+      CREATE DATABASE lifesync;
+      CREATE USER lifesync_user WITH PASSWORD 'your_password';
+      GRANT ALL PRIVILEGES ON DATABASE lifesync TO lifesync_user;
+   ```
+
+2. **Update the DATABASE_URL** in your `.env` file:
+   ```
+   DATABASE_URL=postgresql://lifesync_user:your_password@localhost:5432/lifesync
+   ```
+
+3. **The database tables will be created automatically** when you start the backend server.
+
+## Environment Configuration
+
+### Required Environment Variables
+
+Create a `.env` file in the `lifesync_ai_backend` directory with these variables:
+
+```env
+# Database Configuration
+DATABASE_URL=postgresql://lifesync_user:your_password@localhost:5432/lifesync
+
+# Security
+SECRET_KEY=your-256-bit-secret-key
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+
+# AI Services - Local Ollama with Llama3
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=llama3
+
+# Redis
+REDIS_URL=redis://localhost:6379
+
+# File Upload
+UPLOAD_DIR=uploads
+MAX_FILE_SIZE=10485760
+```
+
+
 ## 🚀 Quick Start Guide
 
 ### Step 1: Open Terminal/Command Prompt
