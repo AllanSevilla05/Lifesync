@@ -189,9 +189,12 @@ Once the backend is running, you can access:
 
 1. **Install PostgreSQL** and create a database:
    ```sql
-   CREATE DATABASE lifesync;
-   CREATE USER lifesync_user WITH PASSWORD 'your_password';
-   GRANT ALL PRIVILEGES ON DATABASE lifesync TO lifesync_user;
+   Go to new terminal and input "psql -U postgres"
+   Input password for Postgres used when downloading Postgres
+   Once Postgres is open input:
+      CREATE DATABASE lifesync;
+      CREATE USER lifesync_user WITH PASSWORD 'your_password';
+      GRANT ALL PRIVILEGES ON DATABASE lifesync TO lifesync_user;
    ```
 
 2. **Update the DATABASE_URL** in your `.env` file:
